@@ -9,6 +9,8 @@ type CardAddInput struct {
 	Attack      int    `json:"attack"`
 	Defense     int    `json:"defense"`
 	Description string `json:"description" binding:"required"`
+
+	ImageID uint `json:"image_id"`
 }
 
 type CardUpdateInput struct {
@@ -21,6 +23,8 @@ type CardUpdateInput struct {
 	Attack      int    `json:"attack"`
 	Defense     int    `json:"defense"`
 	Description string `json:"description" binding:"required"`
+
+	ImageID uint `json:"image_id"`
 }
 
 type CardDeleteInput struct {

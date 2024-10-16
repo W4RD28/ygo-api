@@ -18,6 +18,7 @@ func serveApp() {
 	{
 		controllers.InitAuthRoutes(apiV1)
 		controllers.InitCardRoutes(apiV1)
+		controllers.InitImageRoutes(apiV1)
 	}
 
 	router.Run(":8080")

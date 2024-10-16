@@ -13,6 +13,14 @@ func SaveImage(image *models.Image) (*models.Image, error) {
 	return image, err
 }
 
+func UpdateImage(image *models.Image) (*models.Image, error) {
+	err := db.Database.Save(&image).Error
+	if err != nil {
+		return &models.Image{}, err
+	}
+	return image, err
+}
+
 func FindImageById(id uint) (*models.Image, error) {
 	var image models.Image
 	err := db.Database.First(&image, id).Error
@@ -24,7 +32,10 @@ func FindImageById(id uint) (*models.Image, error) {
 
 func FindImages(query string) (*[]models.Image, error) {
 	var images []models.Image
-	err := db.Database.Where("name ILIKE ?", "%"+query+"%").Find(&images).Error
+	err := db.Database.Table("cards").Select("cards.*, images.*").
+		Joins("left join images on cards.id = images.card_id").
+		Where("cards.name LIKE ?", "%"+query+"%").
+		Find(&images).Error
 	if err != nil {
 		return &[]models.Image{}, err
 	}
