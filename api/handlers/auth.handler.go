@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	input "github.com/W4RD28/ygo-api/internal/inputs"
-	model "github.com/W4RD28/ygo-api/internal/models"
+	"github.com/W4RD28/ygo-api/internal/inputs"
+	"github.com/W4RD28/ygo-api/internal/models"
 	"github.com/W4RD28/ygo-api/internal/services"
 	"github.com/W4RD28/ygo-api/pkg/utils"
 
@@ -12,14 +12,14 @@ import (
 )
 
 func Register(c *gin.Context) {
-	var input input.AuthRegisterInput
+	var input inputs.AuthRegisterInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user := model.User{
+	user := models.User{
 		Username: input.Username,
 		Email:    input.Email,
 		Password: input.Password,
@@ -36,7 +36,7 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var input input.AuthLoginInput
+	var input inputs.AuthLoginInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

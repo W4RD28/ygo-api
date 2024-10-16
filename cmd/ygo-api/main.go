@@ -5,6 +5,7 @@ import (
 
 	"github.com/W4RD28/ygo-api/api/controllers"
 	"github.com/W4RD28/ygo-api/internal/db"
+	"github.com/W4RD28/ygo-api/internal/minio"
 	"github.com/W4RD28/ygo-api/internal/models"
 
 	"github.com/gin-gonic/gin"
@@ -25,12 +26,17 @@ func serveApp() {
 func main() {
 	loadEnv()
 	loadDatabase()
+	loadMinio()
 	serveApp()
 }
 
 func loadDatabase() {
 	db.Connect()
 	db.Database.AutoMigrate(&models.Card{}, &models.Image{}, &models.User{})
+}
+
+func loadMinio() {
+	minio.Connect()
 }
 
 func loadEnv() {
