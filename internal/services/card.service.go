@@ -31,7 +31,7 @@ func DeleteCard(card *models.Card) error {
 
 func FindCardById(id uint) (*models.Card, error) {
 	var card models.Card
-	err := db.Database.First(&card, id).Error
+	err := db.Database.Preload("Images").First(&card, id).Error
 	if err != nil {
 		return &models.Card{}, err
 	}
@@ -40,7 +40,10 @@ func FindCardById(id uint) (*models.Card, error) {
 
 func FindCards(query string) (*[]models.Card, error) {
 	var cards []models.Card
-	err := db.Database.Where("name ILIKE ?", "%"+query+"%").Find(&cards).Error
+
+	err := db.Database.Preload("Images").Where("name LIKE ?", "%"+query+"%").
+		Or("description LIKE ?", "%"+query+"%").Find(&cards).Error
+
 	if err != nil {
 		return &[]models.Card{}, err
 	}

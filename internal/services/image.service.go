@@ -23,7 +23,7 @@ func UpdateImage(image *models.Image) (*models.Image, error) {
 
 func FindImageById(id uint) (*models.Image, error) {
 	var image models.Image
-	err := db.Database.First(&image, id).Error
+	err := db.Database.Preload("Card").First(&image, id).Error
 	if err != nil {
 		return &models.Image{}, err
 	}
@@ -32,10 +32,7 @@ func FindImageById(id uint) (*models.Image, error) {
 
 func FindImages(query string) (*[]models.Image, error) {
 	var images []models.Image
-	err := db.Database.Table("cards").Select("cards.*, images.*").
-		Joins("left join images on cards.id = images.card_id").
-		Where("cards.name LIKE ?", "%"+query+"%").
-		Find(&images).Error
+	err := db.Database.Preload("Card").Where("name LIKE ?", "%"+query+"%").Find(&images).Error
 	if err != nil {
 		return &[]models.Image{}, err
 	}
